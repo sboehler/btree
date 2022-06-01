@@ -59,6 +59,12 @@ func (n *node[K]) splitChild(i int) {
 
 func (n *node[K]) insertTree(key K) *node[K] {
 	if len(n.keys) == cap(n.keys) {
+		// optimization to avoid splitting the root
+		// node if the key already exists
+		if nd, i := n.search(key); nd != nil {
+			nd.keys[i] = key
+			return n
+		}
 		// split root
 		r := &node[K]{
 			leaf:     false,
@@ -98,6 +104,12 @@ func (n *node[K]) insertTreeNotFull(key K) {
 		// keys[index] > keys
 		ch := n.children[index]
 		if len(ch.keys) == cap(ch.keys) {
+			// optimization to avoid splitting the
+			// node if the key already exists
+			if nd, i := ch.search(key); nd != nil {
+				nd.keys[i] = key
+				return
+			}
 			n.splitChild(index)
 			if n.lessFn(n.keys[index], key) {
 				index++
