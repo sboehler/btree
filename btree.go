@@ -146,16 +146,17 @@ func insert[T any](s []T, e T, i int) []T {
 	return s
 }
 
-func (n *node[K]) insertTree(key K) *node[K] {
+// InsertTree inserts a key in the tree, represented by the root node.
+func (n *node[K]) InsertTree(key K) {
 	if len(n.keys) == cap(n.keys) {
 		// optimization to avoid splitting the root
 		// node if the key already exists
 		if nd, i := n.search(key); nd != nil {
 			nd.keys[i] = key
-			return n
+			return
 		}
 		// split root
-		r := &node[K]{
+		r := node[K]{
 			leaf:     false,
 			lessFn:   n.lessFn,
 			keys:     make([]K, 0, cap(n.keys)),
@@ -163,10 +164,9 @@ func (n *node[K]) insertTree(key K) *node[K] {
 		}
 		r.children = append(r.children, *n)
 		r.splitChild(0)
-		n = r
+		*n = r
 	}
 	n.insertTreeNotFull(key)
-	return n
 }
 
 func (n *node[K]) insertTreeNotFull(key K) {

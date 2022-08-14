@@ -13,10 +13,10 @@ func TestInsertAndSearch(t *testing.T) {
 	n := 4000
 	tree := CreateBTree(4, less)
 	for _, i := range rand.Perm(n) {
-		tree = tree.insertTree(i)
+		tree.InsertTree(i)
 	}
 	for _, i := range rand.Perm(n) {
-		tree = tree.insertTree(i)
+		tree.InsertTree(i)
 	}
 	for i := 0; i < n; i++ {
 		n, index := tree.search(i)
@@ -41,7 +41,7 @@ func TestMin(t *testing.T) {
 		if i < min {
 			min = i
 		}
-		tree = tree.insertTree(i)
+		tree.InsertTree(i)
 		k, ok := tree.min()
 		if !ok || k == nil {
 			t.Fatalf("tree.min() = %v, %t, want <value>, true", k, ok)
@@ -64,7 +64,7 @@ func TestMax(t *testing.T) {
 		if i > max {
 			max = i
 		}
-		tree = tree.insertTree(i)
+		tree.InsertTree(i)
 		k, ok := tree.max()
 		if !ok || k == nil {
 			t.Fatalf("tree.max() = %v, %t, want <value>, true", k, ok)
@@ -85,7 +85,7 @@ func TestSearchGE(t *testing.T) {
 		t.Fatalf("tree.SearchGE() = %v, %d, want nil, 0", node, index)
 	}
 	var min = n
-	tree = tree.insertTree(n)
+	tree.InsertTree(n)
 	node, index = tree.SearchGE(key)
 	if node == nil {
 		t.Fatalf("tree.SearchGE() = %v, %d, want <node>, <index>", node, index)
@@ -98,7 +98,7 @@ func TestSearchGE(t *testing.T) {
 		if i < min && i >= key {
 			min = i
 		}
-		tree = tree.insertTree(i)
+		tree.InsertTree(i)
 		node, index := tree.SearchGE(key)
 		if node == nil {
 			t.Fatalf("tree.SearchGE() = %v, %d, want <node>, <index>", node, index)
