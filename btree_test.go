@@ -74,3 +74,37 @@ func TestMax(t *testing.T) {
 		}
 	}
 }
+
+func TestSearchGE(t *testing.T) {
+	n := 4000
+	tree := CreateBTree(40, less)
+	seq := rand.Perm(n)
+	key := seq[len(seq)-1]
+	node, index := tree.SearchGE(key)
+	if node != nil {
+		t.Fatalf("tree.SearchGE() = %v, %d, want nil, 0", node, index)
+	}
+	var min = n
+	tree = tree.insertTree(n)
+	node, index = tree.SearchGE(key)
+	if node == nil {
+		t.Fatalf("tree.SearchGE() = %v, %d, want <node>, <index>", node, index)
+	}
+	if node.keys[index] != min {
+		t.Fatalf("tree.SearchGE() = %d, want %d", node.keys[index], n)
+	}
+
+	for _, i := range rand.Perm(n) {
+		if i < min && i >= key {
+			min = i
+		}
+		tree = tree.insertTree(i)
+		node, index := tree.SearchGE(key)
+		if node == nil {
+			t.Fatalf("tree.SearchGE() = %v, %d, want <node>, <index>", node, index)
+		}
+		if node.keys[index] != min {
+			t.Fatalf("tree.SearchGE() = %d, want %d", node.keys[index], min)
+		}
+	}
+}

@@ -48,6 +48,27 @@ func (n *node[K]) search(key K) (*node[K], int) {
 	return n.children[index].search(key)
 }
 
+// SearchGE finds the smallest key which is greater or equal
+// to the given key.
+func (n *node[K]) SearchGE(key K) (*node[K], int) {
+	// smallest index for which keys[index] >= key
+	index := sort.Search(len(n.keys), func(i int) bool {
+		// n.keys[i] >= key
+		return !n.lessFn(n.keys[i], key)
+	})
+	if n.leaf {
+		if index < len(n.keys) {
+			return n, index
+		}
+		return nil, 0
+	}
+	desc, j := n.children[index].SearchGE(key)
+	if index == len(n.keys) || desc != nil {
+		return desc, j
+	}
+	return n, index
+}
+
 func (n *node[K]) min() (*K, bool) {
 	if n.leaf {
 		if len(n.keys) > 0 {
