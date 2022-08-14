@@ -73,24 +73,24 @@ func (n *node[K]) SearchGE(key K) (*node[K], int) {
 	return n, index
 }
 
-func (n *node[K]) min() (*K, bool) {
+func (n *node[K]) Min() (*K, bool) {
 	if n.leaf {
 		if len(n.keys) > 0 {
 			return &n.keys[0], true
 		}
 		return nil, false
 	}
-	return n.children[0].min()
+	return n.children[0].Min()
 }
 
-func (n *node[K]) max() (*K, bool) {
+func (n *node[K]) Max() (*K, bool) {
 	if n.leaf {
 		if l := len(n.keys); l > 0 {
 			return &n.keys[l-1], true
 		}
 		return nil, false
 	}
-	return n.children[len(n.children)-1].max()
+	return n.children[len(n.children)-1].Max()
 }
 
 // n is non-full, i.e. len(n.children) < 2*t -1. n.children[i] is full, i.e.

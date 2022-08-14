@@ -62,7 +62,7 @@ func TestIterate(t *testing.T) {
 func TestMin(t *testing.T) {
 	n := 4000
 	tree := CreateBTree(40, less)
-	k, ok := tree.min()
+	k, ok := tree.Min()
 	if ok {
 		t.Fatalf("tree.min() = %v, %t, want nil, false", k, ok)
 	}
@@ -72,7 +72,7 @@ func TestMin(t *testing.T) {
 			min = i
 		}
 		tree.InsertTree(i)
-		k, ok := tree.min()
+		k, ok := tree.Min()
 		if !ok || k == nil {
 			t.Fatalf("tree.min() = %v, %t, want <value>, true", k, ok)
 		}
@@ -85,7 +85,7 @@ func TestMin(t *testing.T) {
 func TestMax(t *testing.T) {
 	n := 4000
 	tree := CreateBTree(40, less)
-	k, ok := tree.max()
+	k, ok := tree.Max()
 	if ok {
 		t.Fatalf("tree.max() = %v, %t, want nil, false", k, ok)
 	}
@@ -95,7 +95,7 @@ func TestMax(t *testing.T) {
 			max = i
 		}
 		tree.InsertTree(i)
-		k, ok := tree.max()
+		k, ok := tree.Max()
 		if !ok || k == nil {
 			t.Fatalf("tree.max() = %v, %t, want <value>, true", k, ok)
 		}
