@@ -9,7 +9,7 @@ func less(i, j int) bool {
 	return i < j
 }
 
-func TestSmoke(t *testing.T) {
+func TestInsertAndSearch(t *testing.T) {
 	n := 4000
 	tree := CreateBTree(4, less)
 	for _, i := range rand.Perm(n) {
