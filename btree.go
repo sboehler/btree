@@ -48,6 +48,26 @@ func (n *node[K]) search(key K) (*node[K], int) {
 	return n.children[index].search(key)
 }
 
+func (n *node[K]) min() (*K, bool) {
+	if n.leaf {
+		if len(n.keys) > 0 {
+			return &n.keys[0], true
+		}
+		return nil, false
+	}
+	return n.children[0].min()
+}
+
+func (n *node[K]) max() (*K, bool) {
+	if n.leaf {
+		if l := len(n.keys); l > 0 {
+			return &n.keys[l-1], true
+		}
+		return nil, false
+	}
+	return n.children[len(n.children)-1].max()
+}
+
 // n is non-full, i.e. len(n.children) < 2*t -1. n.children[i] is full, i.e.
 // len(n.children[i]) == 2*t - 1.
 // Example for t = 2:
