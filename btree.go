@@ -212,6 +212,25 @@ func (n *node[K]) insertTreeNotFull(key K) {
 	}
 }
 
+func (n *node[K]) Iterate(f func(key *K) bool) bool {
+	for i := range n.keys {
+		if !n.leaf {
+			if cont := n.children[i].Iterate(f); !cont {
+				return cont
+			}
+		}
+		if cont := f(&n.keys[i]); !cont {
+			return cont
+		}
+	}
+	if !n.leaf {
+		if cont := n.children[len(n.keys)].Iterate(f); !cont {
+			return cont
+		}
+	}
+	return true
+}
+
 func CreateBTree[K any](t int, lessFn func(K, K) bool) *node[K] {
 	return &node[K]{
 		leaf:     true,

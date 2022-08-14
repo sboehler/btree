@@ -29,6 +29,36 @@ func TestInsertAndSearch(t *testing.T) {
 	}
 }
 
+func TestIterate(t *testing.T) {
+	n := 4000
+	tree := CreateBTree(4, less)
+	for _, i := range rand.Perm(n) {
+		tree.InsertTree(i)
+	}
+	for _, i := range rand.Perm(n) {
+		tree.InsertTree(i)
+	}
+	var want int
+	tree.Iterate(func(got *int) bool {
+		if *got != want {
+			t.Fatalf("tree.Iterate(...) = %d, want %d", *got, want)
+		}
+		want++
+		return true
+	})
+	var counter int
+	ok := tree.Iterate(func(got *int) bool {
+		if *got == 500 {
+			return false
+		}
+		counter++
+		return true
+	})
+	if ok || counter != 500 {
+		t.Fatalf("tree.Iterate(...) = %t, %d, want false, 500", ok, counter)
+	}
+}
+
 func TestMin(t *testing.T) {
 	n := 4000
 	tree := CreateBTree(40, less)
