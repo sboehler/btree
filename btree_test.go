@@ -11,7 +11,7 @@ func less(i, j int) bool {
 
 func TestSmoke(t *testing.T) {
 	n := 4000
-	tree := createBTree(4, less)
+	tree := CreateBTree(4, less)
 	for _, i := range rand.Perm(n) {
 		tree = tree.insertTree(i)
 	}
