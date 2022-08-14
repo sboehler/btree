@@ -62,6 +62,10 @@ func (n *node[K]) SearchGE(key K) (*node[K], int) {
 		}
 		return nil, 0
 	}
+	if index < len(n.keys) && !n.lessFn(key, n.keys[index]) {
+		// return if the keys are equal
+		return n, index
+	}
 	desc, j := n.children[index].SearchGE(key)
 	if index == len(n.keys) || desc != nil {
 		return desc, j
