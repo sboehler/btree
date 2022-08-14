@@ -39,6 +39,7 @@ func (n *node[K]) search(key K) (*node[K], int) {
 		return !n.lessFn(n.keys[i], key)
 	})
 	if index < len(n.keys) && !n.lessFn(key, n.keys[index]) {
+		// return if the keys are equal
 		return n, index
 	}
 	if n.leaf {
