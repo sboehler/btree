@@ -110,31 +110,30 @@ func TestSearchGE(t *testing.T) {
 	tree := CreateBTree(40, less)
 	seq := rand.Perm(n)
 	key := seq[len(seq)-1]
-	node, index := tree.SearchGE(key)
-	if node != nil {
-		t.Fatalf("tree.SearchGE() = %v, %d, want nil, 0", node, index)
+	v, ok := tree.SearchGE(key)
+	if ok {
+		t.Fatalf("tree.SearchGE() = %v, %t, want nil, false", v, ok)
 	}
 	var min = n
 	tree.InsertTree(n)
-	node, index = tree.SearchGE(key)
-	if node == nil {
-		t.Fatalf("tree.SearchGE() = %v, %d, want <node>, <index>", node, index)
+	v, ok = tree.SearchGE(key)
+	if !ok || v == nil {
+		t.Fatalf("tree.SearchGE() = %v, %t, want %d,true", v, ok, min)
 	}
-	if node.keys[index] != min {
-		t.Fatalf("tree.SearchGE() = %d, want %d", node.keys[index], n)
+	if *v != min {
+		t.Fatalf("tree.SearchGE() = %d, %t, want %d, true", *v, ok, min)
 	}
-
 	for _, i := range rand.Perm(n) {
 		if i < min && i >= key {
 			min = i
 		}
 		tree.InsertTree(i)
-		node, index := tree.SearchGE(key)
-		if node == nil {
-			t.Fatalf("tree.SearchGE() = %v, %d, want <node>, <index>", node, index)
+		v, ok := tree.SearchGE(key)
+		if !ok || v == nil {
+			t.Fatalf("tree.SearchGE() = %v, %t, want %d, true", v, ok, min)
 		}
-		if node.keys[index] != min {
-			t.Fatalf("tree.SearchGE() = %d, want %d", node.keys[index], min)
+		if *v != min {
+			t.Fatalf("tree.SearchGE() = %d, %t, want %d, true", *v, ok, min)
 		}
 	}
 }
